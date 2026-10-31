@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>اسم المتجر — الصفحة الرئيسية</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#fbf7ef;--ink:#2b1d0e;--mut:#85715a;--gold:#a97c14;--gold2:#e0b14a;--glass:rgba(255,250,240,.62);--line:rgba(169,124,20,.28);--card:#fffaf0;--a:#ff2e7e;--b:#14c995;--c:#6a2cff;--glow:.35}
+:root[data-theme=dark]{--bg:#0d0520;--ink:#f6efe0;--mut:#b7a9cf;--gold:#f1cf7a;--gold2:#ffe9a8;--glass:rgba(24,10,52,.55);--line:rgba(241,207,122,.3);--card:#1a0b3a;--glow:.8}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d0520;--ink:#f6efe0;--mut:#b7a9cf;--gold:#f1cf7a;--gold2:#ffe9a8;--glass:rgba(24,10,52,.55);--line:rgba(241,207,122,.3);--card:#1a0b3a;--glow:.8}}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;line-height:1.7;overflow-x:hidden;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;opacity:var(--glow)}
+.aurora i{position:absolute;width:62vmax;height:62vmax;border-radius:50%;filter:blur(70px);animation:drift 22s ease-in-out infinite alternate}
+.aurora i:nth-child(1){background:var(--c);top:-20vmax;right:-15vmax}
+.aurora i:nth-child(2){background:var(--a);bottom:-25vmax;left:-20vmax;animation-delay:-8s}
+.aurora i:nth-child(3){background:var(--b);top:35%;left:25%;width:40vmax;height:40vmax;animation-delay:-14s;opacity:.6}
+@keyframes drift{to{transform:translate(8vmax,-6vmax) scale(1.15)}}
+header{position:fixed;top:0;inset-inline:0;z-index:11;display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 10px) 18px 10px;background:transparent;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
+header.on{background:var(--glass);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);border-color:var(--line)}
+.logo{font-family:"Reem Kufi",serif;font-weight:700;font-size:22px;color:var(--gold)}
+.ic{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--gold);font-size:18px;cursor:pointer;backdrop-filter:blur(12px)}
+.hero{min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:90px 24px 60px}
+.hero-in{will-change:transform,filter,opacity;max-width:560px}
+.hero h1{font-family:"Reem Kufi",serif;font-weight:700;font-size:clamp(44px,13vw,84px);line-height:1.15;margin:0 0 14px;background:linear-gradient(100deg,var(--gold) 20%,var(--gold2) 45%,var(--a) 60%,var(--gold) 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{to{background-position:-250% 0}}
+.hero p{color:var(--mut);font-size:18px;margin:0 auto 28px;max-width:30ch}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:14px 26px;font:700 16px Tajawal,sans-serif;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.g{background:linear-gradient(120deg,var(--gold),var(--gold2));color:#2b1d0e;box-shadow:0 8px 30px -8px var(--gold2)}
+.btn.o{background:var(--glass);color:var(--ink);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:6px 18px 18px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:9px 20px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:var(--ink);font:500 15px Tajawal,sans-serif;cursor:pointer;backdrop-filter:blur(10px)}
+.chip.on{background:linear-gradient(120deg,var(--gold),var(--gold2));color:#2b1d0e;border-color:transparent}
+h2{font-family:"Reem Kufi",serif;font-size:28px;margin:0;padding:0 18px 4px;color:var(--gold)}
+.sub{padding:0 18px 12px;margin:0;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:0 14px 30px;max-width:980px;margin:auto}
+.grid .card:nth-child(3n+1){grid-column:span 2}
+@media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}.grid .card:nth-child(3n+1){grid-column:span 2}}
+.card{perspective:800px;opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.card.in{opacity:1;transform:none}
+.tilt{border-radius:26px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .15s;transform-style:preserve-3d;box-shadow:0 18px 50px -22px rgba(0,0,0,.55)}
+.pic{height:210px;display:grid;place-items:center;position:relative;font-size:76px}
+.card:nth-child(3n+1) .pic{height:250px;font-size:96px}
+.pic::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(120%);animation:sheen 6s ease-in-out infinite}
+@keyframes sheen{40%,100%{transform:translateX(-120%)}}
+.pic span{filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));transform:translateZ(40px)}
+.tag{position:absolute;top:12px;inset-inline-start:12px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);color:var(--gold);font-size:12px;padding:3px 12px;border-radius:999px}
+.info{padding:14px 16px 16px}
+.info h3{margin:0;font-size:17px}
+.cap{margin:4px 0 12px;color:var(--mut);font-size:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:700;color:var(--gold);font-size:16px}
+.ord{border:0;border-radius:999px;padding:9px 18px;background:var(--ink);color:var(--bg);font:700 14px Tajawal,sans-serif;cursor:pointer}
+nav{position:fixed;inset-inline:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:11;display:flex;justify-content:space-around;padding:8px;border-radius:26px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);border:1px solid var(--line);max-width:520px;margin:auto}
+nav a{color:var(--ink);text-decoration:none;text-align:center;font-size:12px;padding:6px 14px;border-radius:18px}
+nav a b{display:block;font-size:20px;font-weight:400}
+nav a.wa{background:linear-gradient(120deg,var(--gold),var(--gold2));color:#2b1d0e}
+:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+:root{--fd:"El Messiri","Reem Kufi",serif;--fb:"IBM Plex Sans Arabic",Tajawal,system-ui,sans-serif}
+body{font-family:var(--fb)}
+.logo,.hero h1,h2{font-family:var(--fd)}
+.btn,.chip,.ord,.sz,input,select,.toast{font-family:var(--fb)}
+.hr{display:flex;gap:8px}.ic{position:relative}
+.bdg{position:absolute;top:-5px;inset-inline-end:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--a);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.bdg[hidden]{display:none}
+.trust{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 14px 22px;max-width:980px;margin:auto}
+@media(min-width:760px){.trust{grid-template-columns:repeat(4,1fr)}}
+.trust div{background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:12px;font-size:14px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.trust b{display:block;font-size:22px;color:var(--gold)}
+.drop{width:calc(100% - 28px);max-width:952px;margin:0 auto 26px;padding:16px 20px;border-radius:22px;background:linear-gradient(120deg,var(--c),var(--a));color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.drop b{font-size:20px;font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:10px;padding:0 14px 12px;max-width:980px;margin:auto}
+.tools input,.tools select{background:var(--glass);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:12px 18px;font-size:15px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tools input{flex:1;min-width:0}
+.heart{position:absolute;top:10px;inset-inline-end:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--a);font-size:18px;cursor:pointer}
+.stk{margin:0 0 8px;color:var(--a);font-size:13px;font-weight:700}
+.szs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.sz{min-width:38px;padding:4px 8px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:13px;cursor:pointer}
+.sz.on{background:var(--gold);color:#2b1d0e;border-color:var(--gold)}
+.sheet{position:fixed;inset:0;z-index:20;display:none}.sheet.open{display:block}
+.bk{position:absolute;inset:0;background:rgba(5,0,15,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel{position:absolute;bottom:0;inset-inline:0;max-width:560px;margin:auto;max-height:82svh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:28px 28px 0 0;padding:20px 18px calc(env(safe-area-inset-bottom,0px) + 20px)}
+.it{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.it .em{font-size:34px}.it div{flex:1}.it small{color:var(--mut)}
+.q{display:flex;gap:8px;align-items:center}
+.q button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-size:16px}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:18px;margin:14px 0}
+.toast{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);margin:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;z-index:30;opacity:0;transform:translateY(10px);transition:.3s;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+.gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px}.gal::-webkit-scrollbar{display:none}
+.sl{flex:none;width:100%;height:290px;scroll-snap-align:center;display:grid;place-items:center;font-size:120px;border-radius:22px}
+.pgs{margin:10px 0 4px;color:var(--mut);font-size:13px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0d0520"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="المتجر"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<header id="hd"><div class="logo">اسم المتجر</div><div class="hr"><button class="ic" id="fv" aria-label="المفضلة">♡<span class="bdg" id="fc" hidden>0</span></button><button class="ic" id="ct" aria-label="السلة">🛍<span class="bdg" id="cc" hidden>0</span></button><button class="ic" id="th" aria-label="تبديل المظهر">◐</button></div></header>
+
+<section class="hero" id="top"><div class="hero-in" id="hi">
+<h1>أناقة تليق بك</h1>
+<p>قطع مختارة بعناية، تصلك أينما كنت داخل السودان.</p>
+<div class="btns"><a class="btn g" href="#shop">تسوّق الآن</a><a class="btn o" id="waMain" href="#">اطلب عبر واتساب</a></div>
+</div></section>
+
+<section class="trust"><div><b>🚚</b>توصيل داخل السودان أو استلام شخصي</div><div><b>💳</b>دفع مرن حسب راحتك</div><div><b>◎</b>تتبّع طلبك برقمه</div><div><b>✆</b>طلب مباشر عبر واتساب</div></section>
+<div class="drop"><span>وصول الدفعة القادمة بعد</span><b id="cd">--</b></div>
+<section id="shop">
+<h2>وصل حديثاً</h2>
+<p class="sub">اسحب لتتنقل بين الأقسام</p>
+<div class="tools"><input id="q" type="search" placeholder="ابحث عن قطعة…" aria-label="بحث"><select id="so" aria-label="ترتيب"><option value="0">الأحدث</option><option value="1">الأقل سعراً</option><option value="2">الأعلى سعراً</option></select></div>
+<div class="chips" id="chips"></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<div class="sheet" id="sh"><div class="bk" id="bk"></div><div class="panel"><h2 style="padding:0 0 8px">سلتك</h2><div id="ci"></div><div class="tot"><span>الإجمالي</span><span id="tt">٠</span></div><div class="btns"><button class="btn g" id="snd">أرسل الطلب عبر واتساب</button></div></div></div>
+<div class="sheet" id="ps"><div class="bk" id="pbk"></div><div class="panel"><button class="ic" id="px" style="float:inline-start" aria-label="إغلاق">✕</button><div id="pb"></div></div></div>
+<div class="toast" id="ts" role="status"></div>
+<nav aria-label="التنقل">
+<a href="#top"><b>⌂</b>الرئيسية</a>
+<a href="#shop"><b>✦</b>المجموعة</a>
+<a href="#" id="trk"><b>◎</b>تتبّع</a>
+<a href="#" id="waNav" class="wa"><b>✆</b>واتساب</a>
+</nav>
+
+<script>
+const WA="249000000000"; // ضع رقم واتساب الحقيقي (صيغة دولية بدون +)
+const DROP_AT=Date.now()+3*864e5; // تجريبي: يُضبط لاحقاً من لوحة الإدارة بتاريخ حقيقي
+const P=[
+{id:1,n:"قطعة مميزة ١",c:"تفصيل يلفت الأنظار من أول نظرة",p:15000,s:3,e:"👗",g:"#ff2e7e,#6a2cff",t:"جديد"},
+{id:2,n:"قطعة مميزة ٢",c:"راحة طوال اليوم وأناقة للمساء",p:22000,s:12,e:"🧥",g:"#14c995,#0a4d8f",t:"الأكثر طلباً"},
+{id:3,n:"قطعة مميزة ٣",c:"خامة ناعمة بلمسة فاخرة",p:18000,s:9,e:"👔",g:"#e0b14a,#b5367a",t:"جديد"},
+{id:4,n:"قطعة مميزة ٤",c:"إطلالة كاملة بقطعة واحدة",p:12000,s:2,e:"👜",g:"#6a2cff,#14c995",t:"تخفيضات"},
+{id:5,n:"قطعة مميزة ٥",c:"للمناسبات التي لا تُنسى",p:30000,s:7,e:"👠",g:"#ff7a2e,#ff2e7e",t:"جديد"},
+{id:6,n:"قطعة مميزة ٦",c:"دفء وأناقة في آن واحد",p:16000,s:5,e:"🧣",g:"#2e6bff,#c92eff",t:"الأكثر طلباً"}];
+const SZ=["S","M","L","XL"],cats=["الكل","جديد","الأكثر طلباً","تخفيضات","♥ المفضلة"];
+const $=s=>document.querySelector(s),fm=n=>n.toLocaleString("ar-EG")+" ج.س",link=m=>"https://wa.me/"+WA+"?text="+encodeURIComponent(m);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let fav=ld("fav",[]),cart=ld("cart",[]),cur="الكل",onlyFav=false,sel={};
+function toast(m){const t=$("#ts");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
+function badges(){const n=cart.reduce((a,x)=>a+x.q,0);$("#cc").textContent=n.toLocaleString("ar-EG");$("#cc").hidden=!n;$("#fc").textContent=fav.length.toLocaleString("ar-EG");$("#fc").hidden=!fav.length}
+function add(x,s){const i=cart.find(k=>k.id===x.id&&k.s===s);i?i.q++:cart.push({id:x.id,s,q:1});sv("cart",cart);badges();toast("أُضيفت إلى السلة")}
+function total(){return cart.reduce((a,k)=>a+k.q*P.find(x=>x.id===k.id).p,0)}
+function renderCart(){const b=$("#ci");b.innerHTML=cart.length?"":'<p class="sub" style="padding:10px 0">سلتك فارغة، اختر قطعة ومقاسها ثم اضغط "أضف".</p>';
+cart.forEach((k,j)=>{const x=P.find(y=>y.id===k.id),r=document.createElement("div");r.className="it";
+r.innerHTML=`<span class="em">${x.e}</span><div><b>${x.n}</b><br><small>المقاس ${k.s} · ${fm(x.p)}</small></div><span class="q"><button aria-label="إنقاص">−</button><span>${k.q.toLocaleString("ar-EG")}</span><button aria-label="زيادة">+</button></span>`;
+const [m,p]=r.querySelectorAll("button");m.onclick=()=>{k.q--;if(!k.q)cart.splice(j,1);sv("cart",cart);badges();renderCart()};p.onclick=()=>{k.q++;sv("cart",cart);badges();renderCart()};b.appendChild(r)});
+$("#tt").textContent=fm(total())}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+function draw(){const g=$("#grid"),q=$("#q").value.trim(),so=$("#so").value;
+const L=P.filter(x=>(cur==="الكل"||x.t===cur)&&(!onlyFav||fav.includes(x.id))&&(x.n+x.c).includes(q));
+if(so==="1")L.sort((a,b)=>a.p-b.p);if(so==="2")L.sort((a,b)=>b.p-a.p);
+g.innerHTML=L.length?"":'<p class="sub" style="grid-column:1/-1">لا توجد نتائج، جرّب كلمة أخرى.</p>';
+L.forEach(x=>{const d=document.createElement("div"),[c1,c2]=x.g.split(",");d.className="card";
+d.innerHTML=`<div class="tilt"><div class="pic" style="background:linear-gradient(145deg,${c1},${c2})"><span>${x.e}</span><em class="tag" style="font-style:normal">${x.t}</em><button class="heart" aria-label="المفضلة">${fav.includes(x.id)?"♥":"♡"}</button></div><div class="info"><h3>${x.n}</h3><p class="cap">${x.c}</p>${x.s<=3?`<p class="stk">بقي ${x.s.toLocaleString("ar-EG")} قطع فقط</p>`:""}<div class="szs">${SZ.map(z=>`<button class="sz${sel[x.id]===z?" on":""}">${z}</button>`).join("")}</div><div class="row"><span class="price">${fm(x.p)}</span><button class="ord">أضف</button></div></div></div>`;
+const sb=d.querySelectorAll(".sz");sb.forEach(b=>b.onclick=()=>{sel[x.id]=b.textContent;sb.forEach(k=>k.classList.toggle("on",k===b))});
+d.querySelector(".heart").onclick=e=>{const i=fav.indexOf(x.id);i<0?fav.push(x.id):fav.splice(i,1);sv("fav",fav);e.currentTarget.textContent=i<0?"♥":"♡";badges();if(onlyFav)draw()};
+d.querySelector(".ord").onclick=()=>sel[x.id]?add(x,sel[x.id]):toast("اختر المقاس أولاً");
+d.querySelector(".pic").onclick=e=>{if(!e.target.closest(".heart"))openP(x)};d.querySelector("h3").onclick=()=>openP(x);const t=d.querySelector(".tilt");
+d.onpointermove=e=>{const r=d.getBoundingClientRect();t.style.transform=`rotateY(${((e.clientX-r.left)/r.width-.5)*12}deg) rotateX(${-((e.clientY-r.top)/r.height-.5)*12}deg)`};
+d.onpointerleave=()=>t.style.transform="";
+g.appendChild(d);io.observe(d)})}
+cats.forEach(c=>{const b=document.createElement("button");b.className="chip"+(c===cur?" on":"");b.textContent=c;b.onclick=()=>{onlyFav=c===cats[4];cur=onlyFav?"الكل":c;document.querySelectorAll(".chip").forEach(k=>k.classList.toggle("on",k===b));draw()};$("#chips").appendChild(b)});
+$("#q").oninput=draw;$("#so").onchange=draw;
+$("#fv").onclick=()=>{[...document.querySelectorAll(".chip")].pop().click();$("#shop").scrollIntoView()};
+$("#ct").onclick=()=>{renderCart();$("#sh").classList.add("open")};$("#bk").onclick=()=>$("#sh").classList.remove("open");
+$("#snd").onclick=()=>{if(!cart.length)return toast("السلة فارغة");
+const ls=cart.map(k=>{const x=P.find(y=>y.id===k.id);return`• ${x.n} (${k.s}) × ${k.q} = ${fm(k.q*x.p)}`}).join("\n");
+open(link("مرحباً، أريد طلب:\n"+ls+"\nالإجمالي: "+fm(total())+"\n\nالاسم:\nالمنطقة والمعلم القريب:\nالدفع (كاش / تحويل):\nتوصيل أم استلام شخصي:"),"_blank")};
+$("#waMain").href=link("مرحباً، أريد الاستفسار عن المتجر");$("#waNav").href=link("مرحباً، أريد الاستفسار");
+$("#trk").onclick=e=>{e.preventDefault();toast("تتبّع الطلب برقمه في المرحلة القادمة")};
+function cd(){const s=Math.max(0,Math.floor((DROP_AT-Date.now())/1e3));$("#cd").textContent=`${Math.floor(s/86400)}ي ${Math.floor(s%86400/3600)}س ${Math.floor(s%3600/60)}د ${s%60}ث`.replace(/\d+/g,n=>(+n).toLocaleString("ar-EG"))}
+setInterval(cd,1e3);cd();badges();draw();
+const hd=$("#hd"),hi=$("#hi");let tick=false;
+addEventListener("scroll",()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{const y=scrollY,f=Math.min(y/(innerHeight*.7),1);
+hi.style.filter=`blur(${f*16}px)`;hi.style.opacity=1-f*.9;hi.style.transform=`translateY(${y*.25}px) scale(${1-f*.08})`;
+hd.classList.toggle("on",y>30);tick=false})},{passive:true});
+$("#th").onclick=()=>{const r=document.documentElement,v=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0d0520"?"light":"dark";r.dataset.theme=v;try{localStorage.setItem("th",v)}catch(e){}};
+try{const s=localStorage.getItem("th");if(s)document.documentElement.dataset.theme=s}catch(e){}
+function closeP(){$("#ps").classList.remove("open");draw()}
+$("#pbk").onclick=closeP;$("#px").onclick=closeP;
+function openP(x){const [a,b]=x.g.split(","),S=[`linear-gradient(145deg,${a},${b})`,`linear-gradient(35deg,${b},${a})`,`radial-gradient(circle at 30% 20%,${a},${b})`];
+$("#pb").innerHTML=`<div class="gal" style="clear:both">${S.map(s=>`<div class="sl" style="background:${s}">${x.e}</div>`).join("")}</div><p class="pgs">اسحب لرؤية بقية الصور</p><h2 style="padding:0">${x.n}</h2><p class="cap" style="font-size:16px">${x.c}</p><div class="price" style="font-size:22px;margin:6px 0">${fm(x.p)}</div>${x.s<=3?`<p class="stk">بقي ${x.s.toLocaleString("ar-EG")} قطع فقط</p>`:""}<p class="cap">الوصف الكامل والخامة وتعليمات العناية يضيفها المالك من لوحة الإدارة.</p><b>المقاس</b><div class="szs" style="margin-top:6px">${SZ.map(z=>`<button class="sz${sel[x.id]===z?" on":""}">${z}</button>`).join("")}</div><p class="cap">دليل المقاسات يُضاف هنا من لوحة الإدارة.</p><div class="btns" style="justify-content:stretch"><button class="btn g" id="pa">أضف إلى السلة</button><a class="btn o" id="pq" target="_blank" rel="noopener">اسأل عن القطعة</a><button class="btn o" id="psh">مشاركة</button></div>`;
+const z=$("#pb").querySelectorAll(".sz");z.forEach(k=>k.onclick=()=>{sel[x.id]=k.textContent;z.forEach(o=>o.classList.toggle("on",o===k))});
+$("#pa").onclick=()=>sel[x.id]?add(x,sel[x.id]):toast("اختر المقاس أولاً");
+$("#pq").href=link("مرحباً، أسأل عن: "+x.n+"\n"+x.c);
+$("#psh").onclick=()=>navigator.share?navigator.share({title:x.n,text:x.c,url:location.href}).catch(()=>{}):toast("المشاركة غير متاحة على هذا المتصفح");
+$("#ps").classList.add("open")}
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>
