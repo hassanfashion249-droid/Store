@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0520">
+<title>لوحة الإدارة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#0d0520;--ink:#f6efe0;--mut:#b7a9cf;--gold:#f1cf7a;--gold2:#ffe9a8;--card:#1a0b3a;--line:rgba(241,207,122,.28);--a:#ff2e7e;--ok:#14c995;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:radial-gradient(120% 60% at 80% -10%,#3a1580 0,transparent 60%),var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;line-height:1.6;min-height:100svh}
+[hidden]{display:none!important}
+h1,h2,h3,.logo{font-family:"El Messiri",serif;color:var(--gold);margin:0}
+h2{font-size:24px;margin-bottom:8px}h3{font-size:17px;margin:16px 0 6px}
+a{color:var(--gold2)}.mut,small{color:var(--mut)}
+.box{max-width:420px;margin:12vh auto 0;padding:24px}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.logo{font-size:22px;font-weight:700}
+input,select,textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin:0 0 10px}
+input[type=checkbox]{width:auto;margin-inline-end:8px}
+.btn,.sm,.chip,.tabs button{font-family:inherit;cursor:pointer}
+.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:16px;background:linear-gradient(120deg,var(--gold),var(--gold2));color:#2b1d0e;width:100%}
+.btn:disabled{opacity:.6}
+.sm{border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--ink);border-radius:999px;padding:7px 14px;font-size:14px}
+.tabs{display:flex;gap:8px;padding:0 16px 10px}
+.tabs button{flex:1;padding:11px;border-radius:14px;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:16px}
+.tabs button.on{background:linear-gradient(120deg,var(--gold),var(--gold2));color:#2b1d0e;font-weight:700}
+main{padding:0 16px 40px;max-width:760px;margin:auto}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}.chips.wrap{flex-wrap:wrap;overflow:visible}
+.chip{flex:none;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:14px}
+.chip.on{background:var(--gold);color:#2b1d0e;border-color:var(--gold)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.end{text-align:end}
+.st{display:inline-block;padding:2px 12px;border-radius:999px;font-size:13px;background:rgba(255,255,255,.12)}
+.s-new{background:var(--a);color:#fff}.s-delivered,.s-paid{background:var(--ok);color:#06241b}.s-out,.s-ready{background:var(--gold);color:#2b1d0e}.s-cancelled,.s-returned{background:#555}
+.sheet{position:fixed;inset:0;z-index:20;display:none}.sheet.open{display:block}
+.bk{position:absolute;inset:0;background:rgba(5,0,15,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel{position:absolute;bottom:0;inset-inline:0;max-width:600px;margin:auto;max-height:88svh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:26px 26px 0 0;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 20px)}
+.ev{border-inline-start:2px solid var(--gold);padding:2px 12px;margin:6px 0}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:18px;margin:10px 0}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fl label{display:block;font-size:13px;color:var(--mut)}
+.toast{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);margin:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;z-index:30;opacity:0;transition:.3s;pointer-events:none}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div id="lg" class="box">
+<h1>لوحة الإدارة</h1><p class="mut">سجّل الدخول بحساب المدير.</p>
+<input id="em" type="email" placeholder="البريد الإلكتروني" autocomplete="username" dir="ltr">
+<input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password" dir="ltr">
+<button class="btn" id="li">دخول</button>
+</div>
+
+<div id="app" hidden>
+<header><span class="logo">لوحة الإدارة</span><button class="sm" id="out">خروج</button></header>
+<div class="tabs"><button data-t="o" class="on">الطلبات</button><button data-t="p">المنتجات</button></div>
+<main>
+<section id="so">
+<input id="q" type="search" placeholder="ابحث برقم الطلب أو الاسم أو الهاتف">
+<div class="chips" id="fl"></div><div id="ol"></div>
+</section>
+<section id="sp" hidden>
+<button class="btn" id="np" style="margin-bottom:14px">+ منتج جديد</button><div id="pl"></div>
+</section>
+</main>
+</div>
+
+<div class="sheet" id="sh"><div class="bk" id="bk"></div><div class="panel" id="pn"></div></div>
+<div class="toast" id="ts" role="status"></div>
+
+<script src="config.js"></script>
+<script>
+const $=s=>document.querySelector(s),fm=n=>(+n).toLocaleString("ar-EG")+" ج.س";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ST={new:"جديد",paid:"تم الدفع",preparing:"قيد التجهيز",out:"خرج للتوصيل",ready:"جاهز للاستلام",delivered:"تم التسليم",cancelled:"ملغي",returned:"مرتجع"};
+let S=null,O=[],PR=[],flt="all";
+try{S=JSON.parse(localStorage.getItem("adm"))}catch(e){}
+function toast(m){const t=$("#ts");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2200)}
+async function auth(body,type){const r=await fetch(SB_URL+"/auth/v1/token?grant_type="+type,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});const j=await r.json();
+if(!r.ok)throw new Error(j.error_description||j.msg||"فشل الدخول");S={t:j.access_token,r:j.refresh_token};try{localStorage.setItem("adm",JSON.stringify(S))}catch(e){}}
+async function api(path,o={},retry=true){const r=await fetch(SB_URL+path,{...o,headers:{apikey:SB_KEY,Authorization:"Bearer "+S.t,"Content-Type":"application/json",...(o.headers||{})}});
+if(r.status===401&&retry){try{await auth({refresh_token:S.r},"refresh_token");return api(path,o,false)}catch(e){logout();throw e}}
+const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){}
+if(!r.ok)throw new Error(j&&j.message||"خطأ");return j}
+function logout(){S=null;try{localStorage.removeItem("adm")}catch(e){}$("#app").hidden=true;$("#lg").hidden=false}
+async function start(){try{const a=await api("/rest/v1/admins?select=user_id");if(!a.length){toast("هذا الحساب ليس مديراً");return logout()}
+$("#lg").hidden=true;$("#app").hidden=false;await Promise.all([lo(),lp()])}catch(e){toast(e.message);logout()}}
+$("#li").onclick=async()=>{if(!SB_URL.includes("supabase.co")||SB_URL.includes("YOUR-PROJECT"))return toast("عدّل SB_URL في config.js أولاً");
+const b=$("#li");b.disabled=true;b.textContent="جارٍ الدخول…";
+try{await auth({email:$("#em").value.trim(),password:$("#pw").value},"password");await start()}catch(e){toast(e.message)}
+b.disabled=false;b.textContent="دخول"};
+$("#out").onclick=logout;
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(k=>k.classList.toggle("on",k===b));$("#so").hidden=b.dataset.t!=="o";$("#sp").hidden=b.dataset.t!=="p"});
+const cl=()=>$("#sh").classList.remove("open"),op=h=>{$("#pn").innerHTML=h;$("#sh").classList.add("open");const x=$("#cx");if(x)x.onclick=cl};
+$("#bk").onclick=cl;
+
+async function lo(){O=await api("/rest/v1/orders?select=id,order_no,status,total,delivery_type,area,landmark,location_url,payment_method,payment_status,notes,created_at,customers(name,phone),order_items(name,size,qty,price),order_events(status,note,created_at)&order=created_at.desc&limit=200");ro()}
+$("#fl").innerHTML=["all",...Object.keys(ST)].map(k=>`<button class="chip${k==="all"?" on":""}" data-k="${k}">${k==="all"?"الكل":ST[k]}</button>`).join("");
+$("#fl").onclick=e=>{const k=e.target.dataset.k;if(!k)return;flt=k;document.querySelectorAll("#fl .chip").forEach(c=>c.classList.toggle("on",c.dataset.k===k));ro()};
+$("#q").oninput=()=>ro();
+function ro(){const q=$("#q").value.trim().toLowerCase();
+const L=O.filter(o=>(flt==="all"||o.status===flt)&&(!q||(o.order_no+o.customers.name+o.customers.phone).toLowerCase().includes(q)));
+$("#ol").innerHTML=L.length?L.map(o=>`<div class="row" data-i="${o.id}"><div><b dir="ltr">${esc(o.order_no)}</b><br><small>${esc(o.customers.name)} · ${new Date(o.created_at).toLocaleDateString("ar-EG")}</small></div><div class="end"><span class="st s-${o.status}">${ST[o.status]||esc(o.status)}</span><br><small>${fm(o.total)}</small></div></div>`).join(""):'<p class="mut">لا توجد طلبات.</p>'}
+$("#ol").onclick=e=>{const r=e.target.closest(".row");if(r)od(r.dataset.i)};
+function od(id){const o=O.find(x=>x.id==id),c=o.customers;let ns=o.status;
+const loc=/^https?:\/\//.test(o.location_url||"")?` · <a target="_blank" rel="noopener" href="${esc(o.location_url)}">الموقع</a>`:"";
+const wa=()=>`https://wa.me/${c.phone}?text=${encodeURIComponent(`مرحباً ${c.name}، طلبك رقم ${o.order_no}: ${ST[ns]}.`)}`;
+op(`<button class="sm" id="cx" style="float:inline-start">✕</button><h2 dir="ltr" style="text-align:start">${esc(o.order_no)}</h2>
+<p><b>${esc(c.name)}</b> · <a href="tel:+${esc(c.phone)}" dir="ltr">${esc(c.phone)}</a></p>
+<p class="mut">${o.delivery_type==="pickup"?"استلام شخصي":"توصيل: "+esc(o.area)+(o.landmark?" — "+esc(o.landmark):"")}${loc}</p>
+<p class="mut">الدفع: ${o.payment_method==="cash"?"كاش عند الاستلام":"تحويل بنكي"} — ${o.payment_status==="paid"?"مدفوع":"غير مدفوع"}</p>
+${o.notes?`<p>ملاحظات: ${esc(o.notes)}</p>`:""}
+${o.order_items.map(i=>`<div class="row" style="cursor:default"><span>${esc(i.name)} (${esc(i.size||"-")}) × ${(+i.qty).toLocaleString("ar-EG")}</span><span>${fm(i.qty*i.price)}</span></div>`).join("")}
+<div class="tot"><span>الإجمالي</span><span>${fm(o.total)}</span></div>
+<h3>تغيير الحالة</h3><div class="chips wrap" id="sb">${Object.keys(ST).map(k=>`<button class="chip${o.status===k?" on":""}" data-s="${k}">${ST[k]}</button>`).join("")}</div>
+<input id="nt" placeholder="ملاحظة تظهر للزبون (اختياري)">
+<button class="btn" id="sv">حفظ الحالة</button>
+<p style="text-align:center"><a id="wa" target="_blank" rel="noopener" href="${wa()}">أرسل الحالة للزبون عبر واتساب</a></p>
+<h3>السجل</h3>${[...o.order_events].sort((a,b)=>a.created_at<b.created_at?-1:1).map(e=>`<div class="ev"><b>${ST[e.status]||esc(e.status)}</b>${e.note?" — "+esc(e.note):""}<br><small>${new Date(e.created_at).toLocaleString("ar-EG")}</small></div>`).join("")}`);
+$("#sb").onclick=e=>{const k=e.target.dataset.s;if(!k)return;ns=k;document.querySelectorAll("#sb .chip").forEach(b=>b.classList.toggle("on",b.dataset.s===k));$("#wa").href=wa()};
+$("#sv").onclick=async()=>{const b=$("#sv");b.disabled=true;b.textContent="جارٍ الحفظ…";
+try{await api("/rest/v1/rpc/set_order_status",{method:"POST",body:JSON.stringify({p_id:o.id,p_status:ns,p_note:$("#nt").value})});await lo();toast("تم تحديث الحالة");od(id)}catch(e){toast(e.message);b.disabled=false;b.textContent="حفظ الحالة"}}}
+
+async function lp(){PR=await api("/rest/v1/products?select=*&order=id.desc");rp()}
+function rp(){$("#pl").innerHTML=PR.length?PR.map(p=>{const n=Object.values(p.stock||{}).reduce((a,b)=>a+(+b||0),0);return`<div class="row" data-i="${p.id}"><div><b>${esc(p.name)}</b><br><small>${esc(p.category||"")} · المخزون ${n.toLocaleString("ar-EG")}</small></div><div class="end"><span class="st ${p.active?"s-paid":"s-cancelled"}">${p.active?"ظاهر":"مخفي"}</span><br><small>${fm(p.price)}</small></div></div>`}).join(""):'<p class="mut">لا توجد منتجات، أضف أول منتج.</p>'}
+$("#pl").onclick=e=>{const r=e.target.closest(".row");if(r)pe(r.dataset.i)};$("#np").onclick=()=>pe();
+function pe(id){const p=id?PR.find(x=>x.id==id):{name:"",caption:"",description:"",price:"",cost:"",category:"جديد",stock:{S:5,M:5,L:5,XL:5},active:true};
+op(`<button class="sm" id="cx" style="float:inline-start">✕</button><h2>${id?"تعديل منتج":"منتج جديد"}</h2><div class="fl">
+<label>الاسم</label><input id="pn1" value="${esc(p.name)}">
+<label>الكابشن (سطر جذاب)</label><input id="pc" value="${esc(p.caption)}">
+<label>الوصف والخامة</label><textarea id="pd" rows="3">${esc(p.description)}</textarea>
+<label>سعر البيع</label><input id="pp" type="number" inputmode="numeric" value="${esc(p.price)}">
+<label>سعر الشراء (لا يراه الزبون)</label><input id="pk" type="number" inputmode="numeric" value="${esc(p.cost)}">
+<label>القسم</label><select id="pt">${["جديد","الأكثر طلباً","تخفيضات"].map(c=>`<option${p.category===c?" selected":""}>${c}</option>`).join("")}</select>
+<label>المخزون لكل مقاس</label><div class="g4">${["S","M","L","XL"].map(z=>`<div><small>${z}</small><input type="number" min="0" inputmode="numeric" data-z="${z}" value="${(p.stock||{})[z]??0}"></div>`).join("")}</div>
+<label style="color:var(--ink);font-size:16px"><input id="pa" type="checkbox"${p.active?" checked":""}>ظاهر في المتجر</label></div>
+<button class="btn" id="ps">حفظ المنتج</button>`);
+$("#ps").onclick=async()=>{const name=$("#pn1").value.trim(),price=+$("#pp").value;if(!name||!(price>=0)||$("#pp").value==="")return toast("اكتب الاسم والسعر");
+const stock={};document.querySelectorAll("[data-z]").forEach(i=>stock[i.dataset.z]=Math.max(0,+i.value||0));
+const body={name,caption:$("#pc").value.trim(),description:$("#pd").value.trim(),price,cost:+$("#pk").value||0,category:$("#pt").value,stock,active:$("#pa").checked};
+const b=$("#ps");b.disabled=true;b.textContent="جارٍ الحفظ…";
+try{await api(id?"/rest/v1/products?id=eq."+id:"/rest/v1/products",{method:id?"PATCH":"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(body)});await lp();cl();toast("تم حفظ المنتج")}catch(e){toast(e.message);b.disabled=false;b.textContent="حفظ المنتج"}}}
+if(S&&SB_URL.includes("supabase.co"))start();
+</script>
+</body>
+</html>
