@@ -62,6 +62,7 @@ main{padding-bottom:120px}.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 9
 .th button{position:absolute;bottom:4px;inset-inline-start:4px;border:0;border-radius:999px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:3px 8px;font-family:inherit}
 .th button[data-d]{top:4px;bottom:auto;inset-inline-start:auto;inset-inline-end:4px}
 .tm{width:52px;height:52px;border-radius:14px;object-fit:cover;flex:none}
+.panel #ps{position:sticky;bottom:0;margin-top:12px;box-shadow:0 -12px 18px var(--card)}
 </style>
 </head>
 <body>
@@ -70,10 +71,11 @@ main{padding-bottom:120px}.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 9
 <input id="em" type="email" placeholder="البريد الإلكتروني" autocomplete="username" dir="ltr">
 <input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password" dir="ltr">
 <button class="btn" id="li">دخول</button>
+<p style="text-align:center"><a href="./">← العودة إلى المتجر</a></p>
 </div>
 
 <div id="app" hidden>
-<header><span class="logo">لوحة الإدارة</span><button class="sm" id="out">خروج</button></header>
+<header><span class="logo">لوحة الإدارة</span><span><a class="sm" href="./" style="text-decoration:none;color:var(--ink);margin-inline-end:8px">← المتجر</a><button class="sm" id="out">خروج</button></span></header>
 <div class="tabs"><button data-t="h" class="on"><b>⌂</b>الرئيسية</button><button data-t="o"><b>▤</b>الطلبات</button><button data-t="p"><b>✦</b>المنتجات</button><button data-t="c"><b>☺</b>الزبائن</button></div>
 <main>
 <a class="back" href="index.html"><span>→</span>العودة إلى المتجر</a>
@@ -150,13 +152,13 @@ function rp(){$("#pl").innerHTML=PR.length?PR.map(p=>{const n=Object.values(p.st
 $("#pl").onclick=e=>{const r=e.target.closest(".row");if(r)pe(r.dataset.i)};$("#np").onclick=()=>pe();
 function pe(id){let IM;const p=id?PR.find(x=>x.id==id):{name:"",caption:"",description:"",price:"",cost:"",category:"جديد",stock:{S:5,M:5,L:5,XL:5},active:true};
 op(`<button class="sm" id="cx" style="float:inline-start">✕</button><h2>${id?"تعديل منتج":"منتج جديد"}</h2><div class="fl">
+<label>صور المنتج (الأولى هي الرئيسية)</label><div class="ims" id="im"></div><label class="btn" style="display:block;text-align:center;margin-bottom:14px;color:#2b1d0e;font-size:16px">📷 إضافة صور<input id="fi" type="file" accept="image/*" multiple hidden></label>
 <label>الاسم</label><input id="pn1" value="${esc(p.name)}">
 <label>الكابشن (سطر جذاب)</label><input id="pc" value="${esc(p.caption)}">
 <label>الوصف والخامة</label><textarea id="pd" rows="3">${esc(p.description)}</textarea>
 <label>سعر البيع</label><input id="pp" type="number" inputmode="numeric" value="${esc(p.price)}">
 <label>سعر الشراء (لا يراه الزبون)</label><input id="pk" type="number" inputmode="numeric" value="${esc(p.cost)}">
 <label>القسم</label><select id="pt">${["جديد","الأكثر طلباً","تخفيضات"].map(c=>`<option${p.category===c?" selected":""}>${c}</option>`).join("")}</select>
-<label>الصور (الأولى هي الرئيسية)</label><div class="ims" id="im"></div><label class="btn" style="display:block;text-align:center;margin-bottom:12px;color:#2b1d0e;font-size:16px">+ إضافة صور<input id="fi" type="file" accept="image/*" multiple hidden></label>
 <label>المخزون لكل مقاس</label><div class="g4">${["S","M","L","XL"].map(z=>`<div><small>${z}</small><input type="number" min="0" inputmode="numeric" data-z="${z}" value="${(p.stock||{})[z]??0}"></div>`).join("")}</div>
 <label style="color:var(--ink);font-size:16px"><input id="pa" type="checkbox"${p.active?" checked":""}>ظاهر في المتجر</label></div>
 <button class="btn" id="ps">حفظ المنتج</button>`);
