@@ -212,7 +212,7 @@ const ST={new:"تم استلام الطلب",paid:"تم تأكيد الدفع",p
 const live=()=>SB_URL.includes("supabase.co")&&!SB_URL.includes("YOUR-PROJECT"),op=i=>$(i).classList.add("open"),cl=i=>$(i).classList.remove("open");
 async function sb(path,body){const r=await fetch(SB_URL+"/rest/v1/"+path,{method:body?"POST":"GET",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});const t=await r.text();let j;try{j=JSON.parse(t)}catch(e){j=t}if(!r.ok)throw new Error(j&&j.message||"error");return j}
 async function loadP(){try{const d=await sb("products?select=id,name,caption,price,category,stock&active=eq.true&order=id.desc");if(!d.length)return;
-P=d.map(x=>{const k=Object.values(x.stock||{});return{id:x.id,n:x.name,c:x.caption||"",p:+x.price,s:k.length?k.reduce((a,b)=>a+(+b||0),0):99,e:EM[x.id%6],g:GR[x.id%6],t:x.category||"جديد"}});
+P=d.map(x=>{const k=Object.values(x.stock||{});return{id:x.id,n:x.name,c:x.caption||"",p:+x.price,s:k.length?k.reduce((a,b)=>a+(+b||0),0):99,e:EM[x.id%6],g:GR[x.id%6],t:x.category||"جديد"}}).filter(x=>x.s>0);
 cart=cart.filter(k=>P.some(x=>x.id===k.id));sv("cart",cart);badges();draw()}catch(e){}}
 if(live())loadP();
 [["#cbk","#co"],["#cx","#co"],["#okb","#ok"],["#tbk","#tk"],["#tx","#tk"]].forEach(([a,b])=>$(a).onclick=()=>cl(b));
