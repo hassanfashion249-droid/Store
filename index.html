@@ -98,6 +98,7 @@ body{font-family:var(--fb)}
 .pgs{margin:10px 0 4px;color:var(--mut);font-size:13px}
 .fld{display:block;margin:0 0 12px}.fld span{display:block;font-size:13px;color:var(--mut);margin-bottom:4px}
 .fld input,.fld select,.fld textarea{width:100%;background:var(--glass);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px}
+.ann{width:calc(100% - 28px);max-width:952px;margin:0 auto 14px;padding:12px 18px;border-radius:18px;background:var(--glass);border:1px solid var(--line);color:var(--gold);text-align:center;font-weight:500;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0d0520"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="المتجر"><link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -112,6 +113,7 @@ body{font-family:var(--fb)}
 <div class="btns"><a class="btn g" href="#shop">تسوّق الآن</a><a class="btn o" id="waMain" href="#">اطلب عبر واتساب</a></div>
 </div></section>
 
+<div class="ann" id="an" hidden></div>
 <section class="trust"><div><b>🚚</b>توصيل داخل السودان أو استلام شخصي</div><div><b>💳</b>دفع مرن حسب راحتك</div><div><b>◎</b>تتبّع طلبك برقمه</div><div><b>✆</b>طلب مباشر عبر واتساب</div></section>
 <div class="drop"><span>وصول الدفعة القادمة بعد</span><b id="cd">--</b></div>
 <section id="shop">
@@ -131,9 +133,10 @@ body{font-family:var(--fb)}
 <div id="dl"><label class="fld"><span>المنطقة</span><input id="fa"></label><label class="fld"><span>معلم قريب</span><input id="fl"></label><label class="fld"><span>رابط الموقع (اختياري)</span><input id="fu" type="url" inputmode="url"></label></div>
 <label class="fld"><span>طريقة الدفع</span><select id="fy"><option value="cash">كاش عند الاستلام</option><option value="transfer">تحويل بنكي</option></select></label>
 <label class="fld"><span>ملاحظات (اختياري)</span><textarea id="fz" rows="2"></textarea></label>
+<div class="cap" id="fx" style="white-space:pre-line;margin-bottom:10px"></div>
 <div class="tot"><span>الإجمالي</span><span id="ct2"></span></div>
 <button class="btn g" id="go" style="width:100%">تأكيد الطلب</button></div></div>
-<div class="sheet" id="ok"><div class="bk" id="okb"></div><div class="panel" style="text-align:center"><p style="font-size:44px;margin:0">✅</p><h2 style="padding:0">تم استلام طلبك</h2><p class="cap">احتفظ برقم طلبك للتتبّع</p><div class="price" id="on" style="font-size:30px;margin:10px 0"></div><div class="btns" style="flex-direction:column"><a class="btn g" id="ow" target="_blank" rel="noopener">أرسل التأكيد عبر واتساب</a><button class="btn o" id="oc">انسخ الرقم</button><button class="btn o" id="ot">تتبّع الطلب</button></div></div></div>
+<div class="sheet" id="ok"><div class="bk" id="okb"></div><div class="panel" style="text-align:center"><p style="font-size:44px;margin:0">✅</p><h2 style="padding:0">تم استلام طلبك</h2><p class="cap">احتفظ برقم طلبك للتتبّع</p><p class="cap" id="ob" style="white-space:pre-line"></p><div class="price" id="on" style="font-size:30px;margin:10px 0"></div><div class="btns" style="flex-direction:column"><a class="btn g" id="ow" target="_blank" rel="noopener">أرسل التأكيد عبر واتساب</a><button class="btn o" id="oc">انسخ الرقم</button><button class="btn o" id="ot">تتبّع الطلب</button></div></div></div>
 <div class="sheet" id="tk"><div class="bk" id="tbk"></div><div class="panel"><button class="ic" id="tx" style="float:inline-start" aria-label="إغلاق">✕</button><h2 style="padding:0 0 12px">تتبّع طلبك</h2><label class="fld"><span>رقم الطلب</span><input id="tn" placeholder="ORD-2611-0001" autocapitalize="characters" dir="ltr"></label><label class="fld"><span>رقم الهاتف</span><input id="tph" type="tel" inputmode="tel" dir="ltr"></label><button class="btn g" id="tg" style="width:100%">تتبّع</button><div id="tr" style="clear:both"></div></div></div>
 <div class="toast" id="ts" role="status"></div>
 <nav aria-label="التنقل">
@@ -153,8 +156,9 @@ let P=[
 {id:4,n:"قطعة مميزة ٤",c:"إطلالة كاملة بقطعة واحدة",p:12000,s:2,e:"👜",g:"#6a2cff,#14c995",t:"تخفيضات"},
 {id:5,n:"قطعة مميزة ٥",c:"للمناسبات التي لا تُنسى",p:30000,s:7,e:"👠",g:"#ff7a2e,#ff2e7e",t:"جديد"},
 {id:6,n:"قطعة مميزة ٦",c:"دفء وأناقة في آن واحد",p:16000,s:5,e:"🧣",g:"#2e6bff,#c92eff",t:"الأكثر طلباً"}];
+let CF={};
 const SZ=["S","M","L","XL"],cats=["الكل","جديد","الأكثر طلباً","تخفيضات","♥ المفضلة"];
-const $=s=>document.querySelector(s),fm=n=>n.toLocaleString("ar-EG")+" ج.س",link=m=>"https://wa.me/"+WA+"?text="+encodeURIComponent(m);
+const $=s=>document.querySelector(s),fm=n=>n.toLocaleString("ar-EG")+" ج.س",link=m=>"https://wa.me/"+(CF.whatsapp||WA)+"?text="+encodeURIComponent(m);
 const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let fav=ld("fav",[]),cart=ld("cart",[]),cur="الكل",onlyFav=false,sel={};
 function toast(m){const t=$("#ts");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
@@ -215,6 +219,16 @@ async function loadP(){try{const d=await sb("products?select=id,name,caption,des
 P=d.map(x=>{const k=Object.values(x.stock||{});return{id:x.id,n:x.name,c:x.caption||"",p:+x.price,s:k.length?k.reduce((a,b)=>a+(+b||0),0):99,e:EM[x.id%6],g:GR[x.id%6],im:x.images||[],d:x.description||"",t:x.category||"جديد"}}).filter(x=>x.s>0);
 cart=cart.filter(k=>P.some(x=>x.id===k.id));sv("cart",cart);badges();draw()}catch(e){}}
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fxt=()=>{const t=$("#ft").value,y=$("#fy").value;return(t==="pickup"&&CF.pickup_info?"📍 الاستلام: "+CF.pickup_info+"\n":"")+(y==="transfer"&&CF.bank_info?"🏦 التحويل: "+CF.bank_info:"")},fxu=()=>{$("#fx").textContent=fxt()};
+$("#ft").addEventListener("change",fxu);$("#fy").addEventListener("change",fxu);
+async function loadCF(){try{CF=(await sb("rpc/public_settings",{}))||{};
+if(CF.whatsapp){$("#waNav").href=link("مرحباً، أريد الاستفسار");$("#waMain").href=link("مرحباً، أريد الاستفسار عن المتجر")}
+if(CF.store_name){document.title=CF.store_name;document.querySelector(".logo").textContent=CF.store_name}
+if(CF.hero_title)document.querySelector(".hero h1").textContent=CF.hero_title;
+if(CF.hero_sub)document.querySelector(".hero p").textContent=CF.hero_sub;
+if(CF.announcement){const a=$("#an");a.textContent=CF.announcement;a.hidden=false}
+fxu()}catch(e){}}
+if(live())loadCF();
 if(live())loadP();
 [["#cbk","#co"],["#cx","#co"],["#okb","#ok"],["#tbk","#tk"],["#tx","#tk"]].forEach(([a,b])=>$(a).onclick=()=>cl(b));
 $("#snd").onclick=()=>{if(!cart.length)return toast("السلة فارغة");$("#ct2").textContent=fm(total());cl("#sh");op("#co")};
@@ -226,7 +240,7 @@ b.disabled=true;b.textContent="جارٍ الإرسال…";
 try{const ls=cart.map(k=>{const x=P.find(y=>y.id===k.id);return`• ${x.n} (${k.s}) × ${k.q}`}).join("\n");
 const r=await sb("rpc/create_order",{p:{name:n,phone:ph,delivery_type:t,area:ar,landmark:$("#fl").value.trim(),location_url:$("#fu").value.trim(),payment_method:$("#fy").value,notes:$("#fz").value.trim(),items:cart.map(k=>({product_id:k.id,size:k.s,qty:k.q}))}});
 sv("last",{no:r.order_no,ph});cart=[];sv("cart",cart);badges();cl("#co");
-$("#on").textContent=r.order_no;$("#ow").href=link(`مرحباً، طلب جديد رقم ${r.order_no}\nالاسم: ${n}\n${ls}\nالإجمالي: ${fm(+r.total)}\n${t==="pickup"?"استلام شخصي":"توصيل إلى: "+ar}`);op("#ok")}
+$("#on").textContent=r.order_no;$("#ow").href=link(`مرحباً، طلب جديد رقم ${r.order_no}\nالاسم: ${n}\n${ls}\nالإجمالي: ${fm(+r.total)}\n${t==="pickup"?"استلام شخصي":"توصيل إلى: "+ar}`);$("#ob").textContent=fxt();op("#ok")}
 catch(e){toast(/[\u0600-\u06FF]/.test(e.message)?e.message:"تعذّر إرسال الطلب، تحقق من الاتصال وحاول مجدداً")}
 b.disabled=false;b.textContent="تأكيد الطلب"};
 $("#oc").onclick=()=>{try{navigator.clipboard.writeText($("#on").textContent)}catch(e){}toast("تم نسخ الرقم")};
