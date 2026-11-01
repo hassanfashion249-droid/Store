@@ -76,7 +76,7 @@ main{padding-bottom:120px}.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 9
 
 <div id="app" hidden>
 <header><span class="logo">لوحة الإدارة</span><span><a class="sm" href="./" style="text-decoration:none;color:var(--ink);margin-inline-end:8px">← المتجر</a><button class="sm" id="out">خروج</button></span></header>
-<div class="tabs"><button data-t="h" class="on"><b>⌂</b>الرئيسية</button><button data-t="o"><b>▤</b>الطلبات</button><button data-t="p"><b>✦</b>المنتجات</button><button data-t="c"><b>☺</b>الزبائن</button></div>
+<div class="tabs"><button data-t="h" class="on"><b>⌂</b>الرئيسية</button><button data-t="o"><b>▤</b>الطلبات</button><button data-t="p"><b>✦</b>المنتجات</button><button data-t="c"><b>☺</b>الزبائن</button><button data-t="s"><b>⚙</b>الإعدادات</button></div>
 <main>
 <a class="back" href="index.html"><span>→</span>العودة إلى المتجر</a>
 <section id="sh0"><div class="stats" id="st"></div><h3>طلبات تنتظر إجراءً</h3><div id="hl"></div><h3>مخزون منخفض</h3><div id="lw"></div></section>
@@ -84,6 +84,7 @@ main{padding-bottom:120px}.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 9
 <input id="q" type="search" placeholder="ابحث برقم الطلب أو الاسم أو الهاتف">
 <div class="chips" id="fl"></div><div id="ol"></div>
 </section>
+<section id="ss" hidden></section>
 <section id="sc" hidden><div id="cl"></div></section>
 <section id="sp" hidden>
 <button class="btn" id="np" style="margin-bottom:14px">+ منتج جديد</button><div id="pl"></div>
@@ -110,13 +111,13 @@ const t=await r.text();let j=null;try{j=t?JSON.parse(t):null}catch(e){}
 if(!r.ok)throw new Error(j&&j.message||"خطأ");return j}
 function logout(){S=null;try{localStorage.removeItem("adm")}catch(e){}$("#app").hidden=true;$("#lg").hidden=false}
 async function start(){try{const a=await api("/rest/v1/admins?select=user_id");if(!a.length){toast("هذا الحساب ليس مديراً");return logout()}
-$("#lg").hidden=true;$("#app").hidden=false;await Promise.all([lo(),lp()])}catch(e){toast(e.message);logout()}}
+$("#lg").hidden=true;$("#app").hidden=false;await Promise.all([lo(),lp(),ls()])}catch(e){toast(e.message);logout()}}
 $("#li").onclick=async()=>{if(!SB_URL.includes("supabase.co")||SB_URL.includes("YOUR-PROJECT"))return toast("عدّل SB_URL في config.js أولاً");
 const b=$("#li");b.disabled=true;b.textContent="جارٍ الدخول…";
 try{await auth({email:$("#em").value.trim(),password:$("#pw").value},"password");await start()}catch(e){toast(e.message)}
 b.disabled=false;b.textContent="دخول"};
 $("#out").onclick=logout;
-document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(k=>k.classList.toggle("on",k===b));for(const[k,v]of Object.entries({h:"#sh0",o:"#so",p:"#sp",c:"#sc"}))$(v).hidden=b.dataset.t!==k});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(k=>k.classList.toggle("on",k===b));for(const[k,v]of Object.entries({h:"#sh0",o:"#so",p:"#sp",c:"#sc",s:"#ss"}))$(v).hidden=b.dataset.t!==k});
 const cl=()=>$("#sh").classList.remove("open"),op=h=>{$("#pn").innerHTML=h;$("#sh").classList.add("open");const x=$("#cx");if(x)x.onclick=cl};
 $("#bk").onclick=cl;
 
@@ -200,6 +201,31 @@ async function upl(b,retry=true){const n=Date.now()+"-"+Math.random().toString(3
 const r=await fetch(SB_URL+"/storage/v1/object/products/"+n,{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+S.t,"Content-Type":"image/jpeg"},body:b});
 if(r.status===401&&retry){await auth({refresh_token:S.r},"refresh_token");return upl(b,false)}
 if(!r.ok)throw new Error("تعذّر رفع الصورة (تأكد من تنفيذ SQL التخزين)");return SB_URL+"/storage/v1/object/public/products/"+n}
+let ST0={};
+async function ls(){try{const r=await api("/rest/v1/settings?key=eq.store&select=value");ST0=(r[0]&&r[0].value)||{}}catch(e){ST0={}}rs()}
+const nw=t=>{let d=String(t||"").replace(/\D/g,"");if(d.startsWith("00249"))d=d.slice(2);else if(d.startsWith("0"))d="249"+d.slice(1);else if(d.length===9)d="249"+d;return d};
+function rs(){const v=ST0;$("#ss").innerHTML=`<h2>إعدادات المتجر</h2><div class="fl">
+<label>رقم واتساب لاستقبال الطلبات</label><input id="s1" type="tel" inputmode="tel" dir="ltr" placeholder="0912345678" value="${esc(v.whatsapp||"")}">
+<label>اسم المتجر</label><input id="s2" value="${esc(v.store_name||"")}">
+<label>عنوان الصفحة الرئيسية</label><input id="s3" value="${esc(v.hero_title||"")}">
+<label>العبارة تحت العنوان</label><input id="s4" value="${esc(v.hero_sub||"")}">
+<label>شريط إعلان أعلى المتجر (اتركه فارغاً لإخفائه)</label><input id="s5" value="${esc(v.announcement||"")}">
+<label>عنوان ومواعيد الاستلام الشخصي</label><textarea id="s6" rows="2">${esc(v.pickup_info||"")}</textarea>
+<label>بيانات حساب التحويل البنكي</label><textarea id="s7" rows="2">${esc(v.bank_info||"")}</textarea></div>
+<button class="btn" id="s8">حفظ الإعدادات</button>
+<h3 style="margin-top:22px">الأمان والنسخ الاحتياطي</h3>
+<input id="p1" type="password" placeholder="كلمة مرور جديدة (١٠ خانات فأكثر)" autocomplete="new-password" dir="ltr"><button class="btn" id="p2" style="margin-bottom:10px">تغيير كلمة المرور</button>
+<button class="btn" id="ex" style="background:transparent;color:var(--ink);border:1px solid var(--line)">⬇ تصدير الطلبات (CSV)</button>`;
+$("#s8").onclick=async()=>{const w=nw($("#s1").value);if($("#s1").value.trim()&&!/^249\d{9}$/.test(w))return toast("رقم الواتساب غير صحيح");
+const val={whatsapp:w,store_name:$("#s2").value.trim(),hero_title:$("#s3").value.trim(),hero_sub:$("#s4").value.trim(),announcement:$("#s5").value.trim(),pickup_info:$("#s6").value.trim(),bank_info:$("#s7").value.trim()};
+const b=$("#s8");b.disabled=true;b.textContent="جارٍ الحفظ…";
+try{await api("/rest/v1/settings?on_conflict=key",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({key:"store",value:val})});ST0=val;toast("تم حفظ الإعدادات")}catch(e){toast(e.message)}
+b.disabled=false;b.textContent="حفظ الإعدادات"};
+$("#p2").onclick=async()=>{const p=$("#p1").value;if(p.length<10)return toast("كلمة المرور قصيرة (١٠ خانات على الأقل)");
+try{await api("/auth/v1/user",{method:"PUT",body:JSON.stringify({password:p})});$("#p1").value="";toast("تم تغيير كلمة المرور")}catch(e){toast(e.message)}};
+$("#ex").onclick=()=>{const q=s=>{let t=String(s??"");if(/^[=+\-@]/.test(t))t="'"+t;return'"'+t.replace(/"/g,'""')+'"'};
+const rows=[["رقم الطلب","التاريخ","الزبون","الهاتف","الحالة","الإجمالي","القطع"],...O.map(o=>[o.order_no,o.created_at.slice(0,10),o.customers.name,o.customers.phone,ST[o.status]||o.status,o.total,o.order_items.map(i=>`${i.name} (${i.size||"-"}) x${i.qty}`).join(" | ")])];
+const b=new Blob(["\ufeff"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="orders.csv";document.body.appendChild(a);a.click();a.remove()}}
 if(S&&SB_URL.includes("supabase.co"))start();
 </script>
 </body>
