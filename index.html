@@ -96,6 +96,8 @@ body{font-family:var(--fb)}
 .gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px}.gal::-webkit-scrollbar{display:none}
 .sl{flex:none;width:100%;height:290px;scroll-snap-align:center;display:grid;place-items:center;font-size:120px;border-radius:22px}
 .pgs{margin:10px 0 4px;color:var(--mut);font-size:13px}
+.fld{display:block;margin:0 0 12px}.fld span{display:block;font-size:13px;color:var(--mut);margin-bottom:4px}
+.fld input,.fld select,.fld textarea{width:100%;background:var(--glass);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0d0520"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="المتجر"><link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -120,8 +122,19 @@ body{font-family:var(--fb)}
 <div class="grid" id="grid"></div>
 </section>
 
-<div class="sheet" id="sh"><div class="bk" id="bk"></div><div class="panel"><h2 style="padding:0 0 8px">سلتك</h2><div id="ci"></div><div class="tot"><span>الإجمالي</span><span id="tt">٠</span></div><div class="btns"><button class="btn g" id="snd">أرسل الطلب عبر واتساب</button></div></div></div>
+<div class="sheet" id="sh"><div class="bk" id="bk"></div><div class="panel"><h2 style="padding:0 0 8px">سلتك</h2><div id="ci"></div><div class="tot"><span>الإجمالي</span><span id="tt">٠</span></div><div class="btns"><button class="btn g" id="snd">إتمام الطلب</button></div></div></div>
 <div class="sheet" id="ps"><div class="bk" id="pbk"></div><div class="panel"><button class="ic" id="px" style="float:inline-start" aria-label="إغلاق">✕</button><div id="pb"></div></div></div>
+<div class="sheet" id="co"><div class="bk" id="cbk"></div><div class="panel"><button class="ic" id="cx" style="float:inline-start" aria-label="إغلاق">✕</button><h2 style="padding:0 0 12px">إتمام الطلب</h2>
+<label class="fld"><span>الاسم</span><input id="fn" autocomplete="name"></label>
+<label class="fld"><span>رقم الهاتف</span><input id="fp" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xxxxxxxx"></label>
+<label class="fld"><span>طريقة الاستلام</span><select id="ft"><option value="delivery">توصيل</option><option value="pickup">استلام شخصي من المتجر</option></select></label>
+<div id="dl"><label class="fld"><span>المنطقة</span><input id="fa"></label><label class="fld"><span>معلم قريب</span><input id="fl"></label><label class="fld"><span>رابط الموقع (اختياري)</span><input id="fu" type="url" inputmode="url"></label></div>
+<label class="fld"><span>طريقة الدفع</span><select id="fy"><option value="cash">كاش عند الاستلام</option><option value="transfer">تحويل بنكي</option></select></label>
+<label class="fld"><span>ملاحظات (اختياري)</span><textarea id="fz" rows="2"></textarea></label>
+<div class="tot"><span>الإجمالي</span><span id="ct2"></span></div>
+<button class="btn g" id="go" style="width:100%">تأكيد الطلب</button></div></div>
+<div class="sheet" id="ok"><div class="bk" id="okb"></div><div class="panel" style="text-align:center"><p style="font-size:44px;margin:0">✅</p><h2 style="padding:0">تم استلام طلبك</h2><p class="cap">احتفظ برقم طلبك للتتبّع</p><div class="price" id="on" style="font-size:30px;margin:10px 0"></div><div class="btns" style="flex-direction:column"><a class="btn g" id="ow" target="_blank" rel="noopener">أرسل التأكيد عبر واتساب</a><button class="btn o" id="oc">انسخ الرقم</button><button class="btn o" id="ot">تتبّع الطلب</button></div></div></div>
+<div class="sheet" id="tk"><div class="bk" id="tbk"></div><div class="panel"><button class="ic" id="tx" style="float:inline-start" aria-label="إغلاق">✕</button><h2 style="padding:0 0 12px">تتبّع طلبك</h2><label class="fld"><span>رقم الطلب</span><input id="tn" placeholder="ORD-2611-0001" autocapitalize="characters" dir="ltr"></label><label class="fld"><span>رقم الهاتف</span><input id="tph" type="tel" inputmode="tel" dir="ltr"></label><button class="btn g" id="tg" style="width:100%">تتبّع</button><div id="tr" style="clear:both"></div></div></div>
 <div class="toast" id="ts" role="status"></div>
 <nav aria-label="التنقل">
 <a href="#top"><b>⌂</b>الرئيسية</a>
@@ -130,10 +143,10 @@ body{font-family:var(--fb)}
 <a href="#" id="waNav" class="wa"><b>✆</b>واتساب</a>
 </nav>
 
+<script src="config.js"></script>
 <script>
-const WA="+249113925456"; // ضع رقم واتساب الحقيقي (صيغة دولية بدون +)
 const DROP_AT=Date.now()+3*864e5; // تجريبي: يُضبط لاحقاً من لوحة الإدارة بتاريخ حقيقي
-const P=[
+let P=[
 {id:1,n:"قطعة مميزة ١",c:"تفصيل يلفت الأنظار من أول نظرة",p:15000,s:3,e:"👗",g:"#ff2e7e,#6a2cff",t:"جديد"},
 {id:2,n:"قطعة مميزة ٢",c:"راحة طوال اليوم وأناقة للمساء",p:22000,s:12,e:"🧥",g:"#14c995,#0a4d8f",t:"الأكثر طلباً"},
 {id:3,n:"قطعة مميزة ٣",c:"خامة ناعمة بلمسة فاخرة",p:18000,s:9,e:"👔",g:"#e0b14a,#b5367a",t:"جديد"},
@@ -194,6 +207,35 @@ $("#pq").href=link("مرحباً، أسأل عن: "+x.n+"\n"+x.c);
 $("#psh").onclick=()=>navigator.share?navigator.share({title:x.n,text:x.c,url:location.href}).catch(()=>{}):toast("المشاركة غير متاحة على هذا المتصفح");
 $("#ps").classList.add("open")}
 if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+const EM=["👗","🧥","👔","👜","👠","🧣"],GR=["#ff2e7e,#6a2cff","#14c995,#0a4d8f","#e0b14a,#b5367a","#6a2cff,#14c995","#ff7a2e,#ff2e7e","#2e6bff,#c92eff"];
+const ST={new:"تم استلام الطلب",paid:"تم تأكيد الدفع",preparing:"قيد التجهيز",out:"خرج للتوصيل",ready:"جاهز للاستلام",delivered:"تم التسليم",cancelled:"ملغي",returned:"مرتجع"};
+const live=()=>SB_URL.includes("supabase.co")&&!SB_URL.includes("YOUR-PROJECT"),op=i=>$(i).classList.add("open"),cl=i=>$(i).classList.remove("open");
+async function sb(path,body){const r=await fetch(SB_URL+"/rest/v1/"+path,{method:body?"POST":"GET",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});const t=await r.text();let j;try{j=JSON.parse(t)}catch(e){j=t}if(!r.ok)throw new Error(j&&j.message||"error");return j}
+async function loadP(){try{const d=await sb("products?select=id,name,caption,price,category,stock&active=eq.true&order=id.desc");if(!d.length)return;
+P=d.map(x=>{const k=Object.values(x.stock||{});return{id:x.id,n:x.name,c:x.caption||"",p:+x.price,s:k.length?k.reduce((a,b)=>a+(+b||0),0):99,e:EM[x.id%6],g:GR[x.id%6],t:x.category||"جديد"}});
+cart=cart.filter(k=>P.some(x=>x.id===k.id));sv("cart",cart);badges();draw()}catch(e){}}
+if(live())loadP();
+[["#cbk","#co"],["#cx","#co"],["#okb","#ok"],["#tbk","#tk"],["#tx","#tk"]].forEach(([a,b])=>$(a).onclick=()=>cl(b));
+$("#snd").onclick=()=>{if(!cart.length)return toast("السلة فارغة");$("#ct2").textContent=fm(total());cl("#sh");op("#co")};
+$("#ft").onchange=()=>$("#dl").style.display=$("#ft").value==="pickup"?"none":"block";
+$("#go").onclick=async()=>{const b=$("#go"),n=$("#fn").value.trim(),ph=$("#fp").value.trim(),t=$("#ft").value,ar=$("#fa").value.trim();
+if(n.length<2)return toast("اكتب اسمك");if(ph.replace(/\D/g,"").length<9)return toast("اكتب رقم هاتف صحيح");
+if(t==="delivery"&&!ar)return toast("اكتب المنطقة");if(!live())return toast("اربط قاعدة البيانات أولاً (ملف config.js)");
+b.disabled=true;b.textContent="جارٍ الإرسال…";
+try{const ls=cart.map(k=>{const x=P.find(y=>y.id===k.id);return`• ${x.n} (${k.s}) × ${k.q}`}).join("\n");
+const r=await sb("rpc/create_order",{p:{name:n,phone:ph,delivery_type:t,area:ar,landmark:$("#fl").value.trim(),location_url:$("#fu").value.trim(),payment_method:$("#fy").value,notes:$("#fz").value.trim(),items:cart.map(k=>({product_id:k.id,size:k.s,qty:k.q}))}});
+sv("last",{no:r.order_no,ph});cart=[];sv("cart",cart);badges();cl("#co");
+$("#on").textContent=r.order_no;$("#ow").href=link(`مرحباً، طلب جديد رقم ${r.order_no}\nالاسم: ${n}\n${ls}\nالإجمالي: ${fm(+r.total)}\n${t==="pickup"?"استلام شخصي":"توصيل إلى: "+ar}`);op("#ok")}
+catch(e){toast(/[\u0600-\u06FF]/.test(e.message)?e.message:"تعذّر إرسال الطلب، تحقق من الاتصال وحاول مجدداً")}
+b.disabled=false;b.textContent="تأكيد الطلب"};
+$("#oc").onclick=()=>{try{navigator.clipboard.writeText($("#on").textContent)}catch(e){}toast("تم نسخ الرقم")};
+function openT(){const l=ld("last",{});$("#tn").value=l.no||"";$("#tph").value=l.ph||"";$("#tr").innerHTML="";op("#tk")}
+$("#ot").onclick=()=>{cl("#ok");openT()};$("#trk").onclick=e=>{e.preventDefault();openT()};
+$("#tg").onclick=async()=>{if(!live())return toast("اربط قاعدة البيانات أولاً (ملف config.js)");const b=$("#tg");b.disabled=true;b.textContent="جارٍ البحث…";
+try{const r=await sb("rpc/track_order",{p_no:$("#tn").value,p_phone:$("#tph").value});
+$("#tr").innerHTML=r?`<p class="price" style="font-size:20px;margin:12px 0 4px">${ST[r.status]||r.status}</p>${r.events.map(e=>`<div class="it"><div><b>${e.note||ST[e.status]||e.status}</b><br><small>${new Date(e.at).toLocaleString("ar-EG")}</small></div></div>`).join("")}<p class="cap">${r.items.map(i=>`${i.name} (${i.size||"-"}) × ${(+i.qty).toLocaleString("ar-EG")}`).join("<br>")}</p><div class="tot"><span>الإجمالي</span><span>${fm(+r.total)}</span></div>`:'<p class="stk">لم نجد طلباً بهذه البيانات، تأكد من الرقم والهاتف.</p>'}
+catch(e){toast("تعذّر البحث، حاول مجدداً")}
+b.disabled=false;b.textContent="تتبّع"};
 </script>
 </body>
 </html>
